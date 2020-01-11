@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Annyang</title>
+  <audio id="run" controls>
+    <source src="http://localhost:3000/music/run.mp3
+  " type="audio/mpeg">
+  </audio>
+
+ <audio id="strategy" controls>
+    <source src="http://localhost:3000/music/strategy.mp3
+  " type="audio/mpeg">
+  </audio>
+
+ <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+
+   <script>
+    var run = document.getElementById("run");
+    var strategy = document.getElementById("strategy");
+     if (annyang) {
+       // Let's define a command.
+       var commands = {
+         'back': function() {
+            strategy.pause();
+            run.currentTime = 0
+            run.addEventListener('ended', function() {
+                this.play();
+            }, false);            
+            run.play();
+          },
+          'run': function() {
+            run.pause();
+            strategy.addEventListener('ended', function() {
+                this.currentTime = 0;
+                this.play();
+            }, false);          
+          }
+       };
+       // This should be true
+       console.log(annyang.isListening())
+       // Add our commands to annyang
+       annyang.addCommands(commands);
+       // Start listening.
+       annyang.start();
+       annyang.addCallback('soundstart', function() {
+         console.log('sound detected');
+       });
+     }
+    </script>
+  </head>
+  <body>
+    <h1>Say hello or goodbye</h1>
+  </body>
+</html>
